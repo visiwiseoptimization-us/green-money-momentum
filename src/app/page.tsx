@@ -7,15 +7,37 @@ const YOUTUBE_URL = "https://www.youtube.com/@GreenMoneyMomentum";
 export default function Home() {
   return (
     <div>
-      {/* Hero */}
+      {/* Hero — the GMM bull mark lives huge and dim behind everything, not as a framed banner */}
       <section className="relative overflow-hidden border-b border-border">
-        <div className="grid-fade pointer-events-none absolute inset-0" />
-        <div className="relative mx-auto max-w-6xl px-6 pt-16 pb-20 sm:pt-24 sm:pb-28">
+        <div className="grid-fade pointer-events-none absolute inset-0 z-0" />
+
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-[54%] z-0 w-[2600px] max-w-none -translate-x-1/2 -translate-y-1/2 opacity-[0.46] sm:w-[3400px] sm:opacity-[0.44]"
+        >
+          <Image
+            src={assetPath("/gmm-mark.png")}
+            alt=""
+            width={1335}
+            height={200}
+            className="w-full"
+            priority
+          />
+        </div>
+        <div
+          className="pointer-events-none absolute inset-0 z-[1]"
+          style={{
+            background:
+              "radial-gradient(ellipse 58% 55% at 50% 40%, var(--background) 0%, color-mix(in srgb, var(--background) 75%, transparent) 42%, transparent 72%), linear-gradient(to bottom, color-mix(in srgb, var(--background) 10%, transparent) 0%, color-mix(in srgb, var(--background) 25%, transparent) 55%, var(--background) 100%)",
+          }}
+        />
+
+        <div className="relative z-10 mx-auto max-w-6xl px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background-card px-3 py-1 text-xs font-medium text-brand-green-bright">
-              ● Live weekly market breakdowns
-            </span>
-            <h1 className="font-display mt-6 text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-green-bright">
+              Live weekly market breakdowns
+            </p>
+            <h1 className="font-display mt-5 text-5xl font-bold leading-[1.05] tracking-tight sm:text-7xl">
               <span className="brand-gradient-text">Market Movements.</span>
               <br />
               <span className="text-foreground">Making Money. </span>
@@ -41,17 +63,6 @@ export default function Home() {
                 Read this week&apos;s note
               </Link>
             </div>
-          </div>
-
-          <div className="brand-mark-fade mx-auto mt-14 w-full max-w-6xl drop-shadow-[0_0_60px_rgba(126,211,33,0.25)]">
-            <Image
-              src={assetPath("/gmm-mark.png")}
-              alt="GMM — Green Money Momentum bull mark"
-              width={1335}
-              height={200}
-              className="w-full"
-              priority
-            />
           </div>
         </div>
       </section>

@@ -7,8 +7,9 @@ export default function Footer() {
     <footer className="border-t border-border bg-background-elevated">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="font-display text-base font-semibold brand-gradient-text">
-            Green Money Momentum
+          <p className="font-display text-base font-bold">
+            <span className="text-foreground">Green Money </span>
+            <span className="text-brand-green-bright">Momentum</span>
           </p>
           <p className="mt-1 text-sm text-muted">
             Market Movements &middot; Making Money &middot; Money Momentum

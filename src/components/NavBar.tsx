@@ -18,12 +18,10 @@ export default function NavBar() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-brand-green to-brand-green-deep text-sm font-bold text-background">
-            G
-          </span>
-          <span className="font-display text-lg font-semibold tracking-tight">
-            <span className="brand-gradient-text">Green Money Momentum</span>
+        <Link href="/" onClick={() => setOpen(false)}>
+          <span className="font-display text-xl font-bold leading-none tracking-tight sm:text-2xl">
+            <span className="text-foreground">Green Money </span>
+            <span className="text-brand-green-bright">Momentum</span>
           </span>
         </Link>
 

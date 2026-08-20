@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="theme.css" />
+    <style>
+      body {
+        width: 420px;
+        padding: 18px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      input {
+        width: 100%;
+        background: var(--background-card);
+        border: 1px solid var(--border);
+        color: var(--foreground);
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--brand-green);
+      }
+      button {
+        background: var(--brand-green);
+        border: none;
+        color: var(--background);
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      p.help {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      #saved {
+        font-size: 11px;
+        color: var(--brand-green-bright);
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="brand" style="margin-bottom: 14px">Green Money <span class="accent">Momentum</span> — Ticker Settings</div>
+
+    <label for="apiKey">Stock data API key</label>
+    <input id="apiKey" placeholder="Paste your Finnhub API key" />
+
+    <button id="saveBtn">Save</button>
+    <span id="saved" style="display: none">Saved ✓</span>
+
+    <p class="help">
+      Get a free API key at finnhub.io, paste it above, and save. Live data won't turn on until
+      the extension code has USE_MOCK_DATA set to false (see quotes.js) — this page just stores
+      the key for it to use.
+    </p>
+
+    <script src="options.js"></script>
+  </body>
+</html>

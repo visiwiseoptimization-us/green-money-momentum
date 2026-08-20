@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { assetPath } from "@/lib/asset-path";
 
 export const metadata: Metadata = {
   title: "Chrome Extension — Green Money Momentum",
@@ -33,9 +34,9 @@ const FEATURES = [
 ];
 
 const STEPS = [
-  { step: "1", title: "Add to Chrome", description: "Install the extension from the Chrome Web Store." },
-  { step: "2", title: "Build your watchlist", description: "Pick the tickers you want live in your toolbar." },
-  { step: "3", title: "Trade with the tape in view", description: "Prices update live as you browse — no extra tab needed." },
+  { step: "1", title: "Download the extension", description: "Grab the .zip below and unzip it anywhere on your computer." },
+  { step: "2", title: "Load it into Chrome", description: "chrome://extensions → turn on Developer mode → Load unpacked → select the unzipped folder." },
+  { step: "3", title: "Build your watchlist", description: "Pin it from the toolbar and add the tickers you want to track." },
 ];
 
 export default function ExtensionPage() {
@@ -43,7 +44,7 @@ export default function ExtensionPage() {
     <div className="mx-auto max-w-5xl px-6 py-16">
       <div className="text-center">
         <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background-card px-3 py-1 text-xs font-medium text-brand-green-bright">
-          ● Coming soon to the Chrome Web Store
+          ● Early beta — manual install, Chrome Web Store coming later
         </span>
         <h1 className="font-display mt-5 text-3xl font-bold sm:text-5xl">
           <span className="brand-gradient-text">The market, live</span>
@@ -55,13 +56,24 @@ export default function ExtensionPage() {
           momentum read from the channel, without opening another tab.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <button
-            disabled
-            className="glow-green w-full cursor-not-allowed rounded-full bg-brand-green px-6 py-3 text-sm font-semibold text-background sm:w-auto"
+          <a
+            href={assetPath("/downloads/gmm-ticker-extension.zip")}
+            download
+            className="glow-green w-full rounded-full bg-brand-green px-6 py-3 text-center text-sm font-semibold text-background transition-transform hover:scale-105 sm:w-auto"
           >
-            Add to Chrome — Coming soon
-          </button>
+            Download extension (.zip)
+          </a>
+          <a
+            href="#how-it-works"
+            className="w-full rounded-full border border-border px-6 py-3 text-center text-sm font-semibold text-foreground transition-colors hover:border-brand-green sm:w-auto"
+          >
+            How to install
+          </a>
         </div>
+        <p className="mx-auto mt-4 max-w-md text-xs text-muted">
+          It&apos;s not on the Chrome Web Store yet, so Chrome will need you to enable Developer
+          mode to load it — three quick steps below.
+        </p>
       </div>
 
       {/* Browser mock */}
@@ -106,7 +118,7 @@ export default function ExtensionPage() {
       </div>
 
       {/* How it works */}
-      <div className="mt-20">
+      <div id="how-it-works" className="mt-20 scroll-mt-24">
         <h2 className="font-display text-center text-2xl font-semibold">How it works</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-3">
           {STEPS.map((s) => (
