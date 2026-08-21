@@ -94,3 +94,72 @@ body::after {
   -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
 }
+
+/* Hero background: a grid draws in along both axes, then a bright uptrend
+   line sweeps across it, then both erase and the loop repeats. The grid
+   uses the deep/muted green so it stays structural and out of the way; the
+   trend line uses the bright lemon-green (same family as the "Money" /
+   "Momentum" text) so it's the one thing your eye is drawn to. */
+.hero-grid-line {
+  fill: none;
+  stroke: color-mix(in srgb, var(--brand-green-deep) 65%, var(--background) 35%);
+  stroke-width: 1;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+  animation: gmm-grid-draw 11s ease-in-out infinite;
+}
+
+.hero-graph-line {
+  fill: none;
+  stroke: var(--brand-green-bright);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--brand-green-bright) 65%, transparent));
+  animation: gmm-graph-draw 11s ease-in-out infinite;
+}
+
+.hero-graph-dot {
+  fill: var(--brand-green-bright);
+  opacity: 0;
+  filter: drop-shadow(0 0 9px color-mix(in srgb, var(--brand-green-bright) 80%, transparent));
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gmm-graph-dot-pulse 11s ease-in-out infinite;
+}
+
+@keyframes gmm-grid-draw {
+  0% { stroke-dashoffset: 100; }
+  24% { stroke-dashoffset: 0; }
+  80% { stroke-dashoffset: 0; }
+  96%, 100% { stroke-dashoffset: -100; }
+}
+
+@keyframes gmm-graph-draw {
+  0%, 30% { stroke-dashoffset: 100; }
+  62%, 80% { stroke-dashoffset: 0; }
+  94%, 100% { stroke-dashoffset: -100; }
+}
+
+@keyframes gmm-graph-dot-pulse {
+  0%, 60% { opacity: 0; transform: scale(0.5); }
+  66% { opacity: 1; transform: scale(1); }
+  80% { opacity: 1; transform: scale(1.15); }
+  90% { opacity: 1; transform: scale(1); }
+  96%, 100% { opacity: 0; transform: scale(0.5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-grid-line,
+  .hero-graph-line,
+  .hero-graph-dot {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .hero-graph-dot {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

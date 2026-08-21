@@ -1,34 +1,21 @@
-import Image from "next/image";
 import Link from "next/link";
-import { assetPath } from "@/lib/asset-path";
+import HeroGraphGrid from "@/components/hero/HeroGraphGrid";
 
 const YOUTUBE_URL = "https://www.youtube.com/@GreenMoneyMomentum";
 
 export default function Home() {
   return (
     <div>
-      {/* Hero — the GMM bull mark lives huge and dim behind everything, not as a framed banner */}
+      {/* Hero — a looping grid + uptrend line draws in behind everything, no static art */}
       <section className="relative overflow-hidden border-b border-border">
-        <div className="grid-fade pointer-events-none absolute inset-0 z-0" />
-
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[54%] z-0 w-[2600px] max-w-none -translate-x-1/2 -translate-y-1/2 opacity-[0.46] sm:w-[3400px] sm:opacity-[0.44]"
-        >
-          <Image
-            src={assetPath("/gmm-mark.png")}
-            alt=""
-            width={1335}
-            height={200}
-            className="w-full"
-            priority
-          />
+        <div className="pointer-events-none absolute inset-0 z-0">
+          <HeroGraphGrid />
         </div>
         <div
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
             background:
-              "radial-gradient(ellipse 58% 55% at 50% 40%, var(--background) 0%, color-mix(in srgb, var(--background) 75%, transparent) 42%, transparent 72%), linear-gradient(to bottom, color-mix(in srgb, var(--background) 10%, transparent) 0%, color-mix(in srgb, var(--background) 25%, transparent) 55%, var(--background) 100%)",
+              "radial-gradient(ellipse 42% 55% at 50% 38%, var(--background) 0%, color-mix(in srgb, var(--background) 55%, transparent) 48%, transparent 78%), linear-gradient(to bottom, color-mix(in srgb, var(--background) 4%, transparent) 0%, color-mix(in srgb, var(--background) 15%, transparent) 55%, var(--background) 100%)",
           }}
         />
 
