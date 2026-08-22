@@ -14,8 +14,8 @@ export default function ChatPage() {
         </span>
         <h1 className="font-display mt-3 text-3xl font-bold sm:text-4xl">Investor Chat Room</h1>
         <p className="mx-auto mt-4 max-w-xl text-sm text-muted sm:text-base">
-          Talk price action with the GMM community in real time. This is a design preview —
-          messages you send here are local to your screen until the real-time backend is wired up.
+          Talk price action with the GMM community in real time. Pick a display name and jump in —
+          no account needed. Not investment advice; see the pinned rules before posting.
         </p>
       </div>
 

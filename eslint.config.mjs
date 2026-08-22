@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The Chrome extension is a separate, plain-JS (non-module, no bundler)
+    // project living alongside the Next.js app — its files are loaded via
+    // <script>/importScripts as globals, which trips this config's
+    // no-unused-vars rule. Lint it separately if needed.
+    "extension/**",
   ]),
 ]);
 

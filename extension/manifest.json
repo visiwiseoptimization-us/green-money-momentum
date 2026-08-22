@@ -3,7 +3,7 @@
   "name": "GMM Live Ticker",
   "short_name": "GMM Ticker",
   "description": "Live stock ticker watchlist from Green Money Momentum, right in your browser toolbar.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -23,6 +23,6 @@
     "service_worker": "background.js"
   },
   "permissions": ["storage", "alarms"],
-  "host_permissions": [],
+  "host_permissions": ["https://finnhub.io/*"],
   "options_page": "options.html"
 }

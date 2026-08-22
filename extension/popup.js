@@ -42,11 +42,17 @@ function showStatus(message) {
 async function loadAndRender() {
   const watchlist = await getWatchlist();
   try {
-    const quotes = await fetchQuotes(watchlist);
+    const { quotes, mode, error } = await fetchQuotes(watchlist);
     renderQuotes(quotes);
-    showStatus(USE_MOCK_DATA ? "Showing sample data — connect a live API key in Options" : "");
+    if (mode === "mock") {
+      showStatus("Showing sample data — add a free API key in Options to go live");
+    } else if (mode === "fallback") {
+      showStatus("Live quotes failed, showing sample data — " + error);
+    } else {
+      showStatus("");
+    }
   } catch (err) {
-    showStatus("Couldn't load live quotes: " + err.message);
+    showStatus("Couldn't load quotes: " + err.message);
   }
 }
 

@@ -16,8 +16,13 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 async function refresh() {
   try {
     const symbols = await getWatchlist();
-    const quotes = await fetchQuotes(symbols);
-    chrome.storage.local.set({ gmmQuotes: quotes, gmmQuotesUpdatedAt: Date.now() });
+    const { quotes, mode, error } = await fetchQuotes(symbols);
+    chrome.storage.local.set({
+      gmmQuotes: quotes,
+      gmmQuotesMode: mode,
+      gmmQuotesError: error,
+      gmmQuotesUpdatedAt: Date.now(),
+    });
   } catch (err) {
     // Swallow errors here — the popup surfaces a status message if quotes
     // look stale or a fetch failed, so a background hiccup isn't fatal.

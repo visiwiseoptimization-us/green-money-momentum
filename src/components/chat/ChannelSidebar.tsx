@@ -5,9 +5,13 @@ import { CHANNEL_CATEGORIES } from "./data";
 export default function ChannelSidebar({
   activeChannel,
   onSelect,
+  displayName,
+  onRename,
 }: {
   activeChannel: string;
   onSelect: (channelId: string) => void;
+  displayName: string | null;
+  onRename: () => void;
 }) {
   return (
     <div className="flex w-60 shrink-0 flex-col border-r border-border bg-background-card">
@@ -57,14 +61,24 @@ export default function ChannelSidebar({
       {/* User panel */}
       <div className="flex items-center gap-2 border-t border-border bg-background-elevated px-3 py-3">
         <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-background-card text-xs font-semibold text-brand-silver">
-          YOU
+          {displayName ? displayName.slice(0, 2).toUpperCase() : "?"}
           <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-background-elevated bg-brand-green-bright" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xs font-semibold text-foreground">you</p>
-          <p className="truncate text-[11px] text-muted">Online</p>
+          <p className="truncate text-xs font-semibold text-foreground">
+            {displayName ?? "Not joined yet"}
+          </p>
+          <p className="truncate text-[11px] text-muted">{displayName ? "Online" : "Pick a name to chat"}</p>
         </div>
-        <span className="text-muted">⚙</span>
+        {displayName && (
+          <button
+            onClick={onRename}
+            title="Change display name"
+            className="text-muted transition-colors hover:text-foreground"
+          >
+            ⚙
+          </button>
+        )}
       </div>
     </div>
   );

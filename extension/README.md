@@ -4,7 +4,9 @@ A Manifest V3 Chrome extension: a toolbar popup showing a live watchlist of stoc
 
 ## Current state
 
-Ships with **mock data** (see `quotes.js`) so it's fully testable without any API key or account. Prices wobble slightly on each refresh so it *feels* live, but it is not pulling real market data yet.
+Fully wired for **real, live quotes** via Finnhub — it just needs a free API key (see "Going live"
+below). Without a key, it shows mock data (prices wobble slightly on each refresh) so it's still
+fully testable out of the box with no signup required.
 
 ## Load it locally (unpacked) to test
 
@@ -15,13 +17,19 @@ Ships with **mock data** (see `quotes.js`) so it's fully testable without any AP
 
 ## Going live with real data
 
-1. Sign up for a stock data API. [Finnhub](https://finnhub.io) is the default this code is wired for — free tier, 60 calls/minute, no credit card.
+1. Sign up for a free [Finnhub](https://finnhub.io) account — 60 calls/minute, no credit card.
 2. Click the extension's **Details → Extension options**, paste the API key, save.
-3. In `quotes.js`, set `USE_MOCK_DATA = false`.
-4. In `manifest.json`, add the provider's domain to `host_permissions`, e.g. `"https://finnhub.io/*"`.
-5. Reload the extension (chrome://extensions → refresh icon).
+3. That's it — the popup detects the saved key and switches to live quotes automatically on the
+   next refresh (up to 1 minute, or click the refresh icon in the popup). No code edits needed.
+4. Remove the key from the options page any time to go back to sample data.
 
-Swapping providers (Alpha Vantage, Twelve Data, Polygon, IEX) means replacing `fetchRealQuotes()` in `quotes.js` with that provider's request/response shape — the rest of the extension (storage, popup, background refresh) doesn't need to change.
+If a live fetch ever fails (bad key, rate limit, provider outage), the popup falls back to sample
+data automatically and shows why in the status banner, instead of going blank.
+
+Swapping providers (Alpha Vantage, Twelve Data, Polygon, IEX) means replacing `fetchRealQuotes()` in
+`quotes.js` with that provider's request/response shape, and updating the domain in
+`manifest.json`'s `host_permissions` — the rest of the extension (storage, popup, background
+refresh) doesn't need to change.
 
 ## Publishing to the Chrome Web Store
 

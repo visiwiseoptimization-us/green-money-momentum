@@ -1,20 +1,13 @@
 // Data layer for the GMM Live Ticker extension.
 //
-// Right now this returns mock quotes so the popup is fully functional to
-// demo/test without any API key. To go live with real data:
+// Live data turns on automatically as soon as someone pastes an API key
+// into the options page — no code edits needed. Without a key, it falls
+// back to mock quotes so the popup is still fully demo-able out of the box.
 //
-//   1. Sign up for a stock data provider (Finnhub's free tier is a solid
-//      default: https://finnhub.io — 60 calls/min free, real-time-ish quotes).
-//   2. Save the API key via the extension's options page (chrome.storage.local
-//      key "gmmApiKey" — the options.html/options.js files already write it there).
-//   3. Set USE_MOCK_DATA to false below.
-//   4. Add the provider's host to "host_permissions" in manifest.json, e.g.
-//      "https://finnhub.io/*".
-//
-// fetchRealQuotes() below already contains a working Finnhub implementation —
-// it's just not called while USE_MOCK_DATA is true.
-
-const USE_MOCK_DATA = true;
+// Default provider: Finnhub (https://finnhub.io — 60 calls/min free tier,
+// no credit card to sign up). Swapping providers means replacing
+// fetchRealQuotes() below with that provider's request/response shape —
+// storage, popup, and background refresh don't need to change.
 
 const DEFAULT_WATCHLIST = ["SPY", "QQQ", "NVDA", "AAPL", "TSLA", "AMD"];
 
@@ -47,7 +40,7 @@ function setWatchlist(symbols) {
 
 function getApiKey() {
   return new Promise((resolve) => {
-    chrome.storage.local.get(["gmmApiKey"], (result) => resolve(result.gmmApiKey || ""));
+    chrome.storage.local.get(["gmmApiKey"], (result) => resolve((result.gmmApiKey || "").trim()));
   });
 }
 
@@ -70,20 +63,24 @@ async function fetchMockQuotes(symbols) {
   return symbols.map(mockQuoteFor);
 }
 
-// Real implementation (Finnhub) — wired up but unused until USE_MOCK_DATA=false.
-async function fetchRealQuotes(symbols) {
-  const apiKey = await getApiKey();
-  if (!apiKey) {
-    throw new Error("No API key set. Add one in the extension's options page.");
-  }
+// Real implementation (Finnhub).
+async function fetchRealQuotes(symbols, apiKey) {
   const results = await Promise.all(
     symbols.map(async (symbol) => {
       const res = await fetch(
         `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${apiKey}`
       );
+      if (res.status === 401 || res.status === 403) {
+        throw new Error("That API key was rejected — double check it on the options page.");
+      }
       if (!res.ok) throw new Error(`Finnhub request failed for ${symbol}: ${res.status}`);
       const data = await res.json();
-      // Finnhub /quote shape: c = current, pc = previous close
+      // Finnhub /quote shape: c = current, pc = previous close. A symbol
+      // Finnhub doesn't recognize comes back as all-zeros rather than an
+      // HTTP error, so surface that as a clearer message.
+      if (!data || (data.c === 0 && data.pc === 0)) {
+        throw new Error(`No data for "${symbol}" — check the symbol is valid.`);
+      }
       const price = data.c;
       const changePct = data.pc ? ((data.c - data.pc) / data.pc) * 100 : 0;
       return { symbol, price: Number(price.toFixed(2)), changePct: Number(changePct.toFixed(2)) };
@@ -92,7 +89,28 @@ async function fetchRealQuotes(symbols) {
   return results;
 }
 
+// Returns { quotes, mode, error }.
+//   mode: "live"     — real data from the provider
+//         "mock"      — no API key set yet, showing sample data
+//         "fallback"  — a key is set but the live fetch failed, showing
+//                       sample data so the popup isn't empty
 async function fetchQuotes(symbols) {
-  if (!symbols.length) return [];
-  return USE_MOCK_DATA ? fetchMockQuotes(symbols) : fetchRealQuotes(symbols);
+  if (!symbols.length) return { quotes: [], mode: "live", error: null };
+
+  const apiKey = await getApiKey();
+  if (!apiKey) {
+    return { quotes: await fetchMockQuotes(symbols), mode: "mock", error: null };
+  }
+
+  try {
+    const quotes = await fetchRealQuotes(symbols, apiKey);
+    return { quotes, mode: "live", error: null };
+  } catch (err) {
+    console.error("GMM ticker: live quote fetch failed, showing sample data instead.", err);
+    return {
+      quotes: await fetchMockQuotes(symbols),
+      mode: "fallback",
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
 }
